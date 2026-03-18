@@ -65,7 +65,7 @@ export function Home() {
                 <div className="rounded-[1.75rem] border border-stone-800/10 bg-white/75 p-6 shadow-sm">
                     <p className="text-xs font-bold uppercase tracking-[0.16em] text-orange-700">Upcoming Tasks</p>
                     <div className="mt-5">
-                        <TaskList tasks={dummyTasks} />
+                        <TaskList tasks={dummyTasks} onDelete={() => {}} view='list' />
                     </div>
                 </div>
 

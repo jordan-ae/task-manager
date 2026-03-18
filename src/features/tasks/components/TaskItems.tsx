@@ -19,7 +19,6 @@ const getStatusColor = (status: string) => {
 
 export default function TaskItem({ title, status }: TaskItemProps) {
   return (
-<<<<<<< feature/fetchlist
       <li className="flex justify-between p-4 shadow-sm hover:bg-gray-50grid w-full grid-cols-[auto_1fr] items-center gap-3 rounded-2xl border px-4 py-3.5 text-left transition duration-150 border-orange-700/20 bg-orange-100/10">
         <span>{title}</span>
         <span
@@ -29,16 +28,5 @@ export default function TaskItem({ title, status }: TaskItemProps) {
           {status}
         </span>
       </li>
-=======
-    <li className="flex justify-between text-xl items-center my-3 p-4 gap-4 w-full rounded shadow-sm hover:bg-gray-50">
-      <span>{title}</span>
-      <span
-        className="px-2 py-2 rounded-full text-white text-sm"
-        style={{ backgroundColor: getStatusColor(status) }}
-      >
-        {status}
-      </span>
-    </li>
->>>>>>> feat/tasks-features
   );
 }
