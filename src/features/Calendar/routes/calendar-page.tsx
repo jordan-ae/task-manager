@@ -33,6 +33,11 @@ const CalendarPage: React.FC = () => {
     localStorage.setItem("events", JSON.stringify(events));
   }, [events]);
 
+  const openModal = (day?: number) => {
+    setSelectedDay(day ?? null);
+    setShowModal(true);
+  };
+
   const handleAdd = () => {
     if (!title || selectedDay === null) return;
 
@@ -66,11 +71,6 @@ const CalendarPage: React.FC = () => {
 
   const handleDelete = (id: number) => {
     setEvents((prev) => prev.filter((e) => e.id !== id));
-  };
-
-  const openModal = (day?: number) => {
-    setSelectedDay(day ?? null);
-    setShowModal(true);
   };
 
   const changeMonth = (offset: number) => {
