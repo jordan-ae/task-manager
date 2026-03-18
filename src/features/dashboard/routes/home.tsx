@@ -82,7 +82,7 @@ export function Home() {
                 toastOptions={{
                     unstyled: true,
                     classNames: {
-                        toast: "bg-orange-100/50 border-1 border-orange-700/20 text-black p-4 rounded-lg shadow-lg flex items-center gap-2",
+                        toast: "bg-orange-100/50 border-1 border-orange-700/50 text-black p-4 rounded-lg shadow-lg flex items-center gap-2",
                         description: "!text-emerald-950/50 text-xs",
                         actionButton: "text-black",
                     },
