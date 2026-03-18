@@ -7,7 +7,7 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-stone-950 via-stone-900 to-orange-950 px-6 py-10 text-stone-50">
+    <main className="min-h-screen bg-linear-to-br from-stone-950 via-stone-900 to-orange-950 px-6 py-10 text-stone-50">
       <section className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="space-y-6">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-orange-300">Starter View</p>
@@ -27,7 +27,7 @@ function App() {
         </div>
 
         <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-2xl">
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-sky-400/10" />
+          <div className="absolute inset-0 bg-linear-to-br from-orange-500/10 via-transparent to-sky-400/10" />
           <div className="relative flex items-center justify-center gap-6">
             <img src={heroImg} className="h-40 w-auto" width="170" height="179" alt="" />
             <div className="grid gap-4">
