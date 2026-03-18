@@ -48,7 +48,7 @@ const CalendarPage: React.FC = () => {
     );
   };
 
-  // ✅ FIXED openModal
+  // FIXED openModal
   const openModal = (day?: number) => {
     if (day !== undefined) {
       setSelectedDay(day); // from calendar click
@@ -208,6 +208,22 @@ const CalendarPage: React.FC = () => {
             <h3 className="font-semibold mb-2">
               Add Event {selectedDay && `(Day ${selectedDay})`}
             </h3>
+
+            {/*  Day Selector FIX */}
+            <select
+              value={selectedDay ?? ""}
+              onChange={(e) => setSelectedDay(Number(e.target.value))}
+              className="w-full p-2 mt-2 border rounded"
+            >
+              <option value="">Select Day</option>
+              {Array.from({ length: daysInMonth }, (_, i) => i + 1).map(
+                (d) => (
+                  <option key={d} value={d}>
+                    {d}
+                  </option>
+                )
+              )}
+            </select>
 
             <input
               placeholder="Title"
