@@ -3,6 +3,7 @@ import { dummyTasks } from '../../tasks/routes/tasks-page';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 import { Toaster } from '../../../components/ui/sonner';
+import { Button } from '@/components/ui/button';
 
 export function Home() {
     const completedCount = dummyTasks.filter(task => task.status === "Completed").length;
@@ -21,7 +22,7 @@ export function Home() {
                 <div>
                     <p className="text-xs font-bold uppercase tracking-[0.16em] text-orange-700">Overview</p>
                     <h2 className="mt-2 text-xl font-medium tracking-[-0.04em] text-stone-800 sm:text-4xl">
-                        TaskFlow — Stay Organized, Get Things Done
+                        TaskFlow — Stay Organized, Get Things Done <Button>Hello</Button>
                     </h2>
                     <p className="mt-4 max-w-2xl text-base leading-8 text-stone-600">
                         A simple dashboard that lets users add and manage tasks effortlessly.
