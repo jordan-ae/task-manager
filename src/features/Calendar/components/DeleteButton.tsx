@@ -5,7 +5,10 @@ type DeleteButtonProps = {
 const DeleteButton: React.FC<DeleteButtonProps> = ({ onClick }) => {
   return (
     <button
-      onClick={onClick}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick?.();
+      }}
       style={{
         background: "#ffe5e0",
         color: "#d14300",
