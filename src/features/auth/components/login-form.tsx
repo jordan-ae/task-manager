@@ -35,6 +35,15 @@ export function LoginForm() {
       setError("Unable to log in.");
     }
   }
+  function handleReset() {
+    if (!email) {
+      alert("please enter your email")
+      return;
+    }
+     
+    alert(`A reset link has been sent to ${email}`);
+    setShowForgot(false);
+    }
 
   return (
     <form className="mt-7 grid gap-4" onSubmit={handleSubmit}>
@@ -43,6 +52,8 @@ export function LoginForm() {
           <h2 className="text-xl text-white">Reset Password</h2>
 
           <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="Enter your email"
             className="p-3 rounded bg-gray-800 text-white"
@@ -50,6 +61,7 @@ export function LoginForm() {
 
           <button
             type="button"
+            onClick={handleReset}
             className="bg-orange-500 p-3 rounded text-white"
           >
             Reset Password
