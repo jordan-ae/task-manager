@@ -21,13 +21,11 @@ const CalendarPage: React.FC = () => {
   const [description, setDescription] = useState("");
   const [color, setColor] = useState("#ea580c");
 
-  // Load events
   useEffect(() => {
     const saved = localStorage.getItem("events");
     if (saved) setEvents(JSON.parse(saved));
   }, []);
 
-  // Save events
   useEffect(() => {
     localStorage.setItem("events", JSON.stringify(events));
   }, [events]);
@@ -82,7 +80,6 @@ const CalendarPage: React.FC = () => {
       },
     ]);
 
-    // reset
     setTitle("");
     setTime("");
     setDescription("");
@@ -101,11 +98,13 @@ const CalendarPage: React.FC = () => {
     setCurrentDate(newDate);
   };
 
+  // For calendar grid alignment
   const firstDayOfMonth = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth(),
     1
   ).getDay();
+  const daysInMonth = getDaysInMonth();
 
   return (
     <div className="p-5 bg-orange-50 min-h-screen">
@@ -147,7 +146,7 @@ const CalendarPage: React.FC = () => {
         </button>
       </div>
 
-      {/* Weekdays */}
+      {/* Weekday Headers */}
       <div className="grid grid-cols-7 text-center font-semibold mb-2">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
           <div key={d}>{d}</div>
@@ -156,18 +155,17 @@ const CalendarPage: React.FC = () => {
 
       {/* Calendar Grid */}
       <div className="grid grid-cols-7 gap-3">
-        {/* Empty spaces */}
+        {/* Empty slots for first day */}
         {Array.from({ length: firstDayOfMonth }).map((_, i) => (
           <div
             key={`blank-${i}`}
             className="p-2 border rounded min-h-[100px] bg-gray-50"
-          />
+          ></div>
         ))}
 
         {/* Days */}
         {Array.from({ length: daysInMonth }, (_, i) => {
           const day = i + 1;
-
           const dayEvents = events.filter(
             (e) =>
               new Date(e.date).getDate() === day &&
@@ -198,6 +196,7 @@ const CalendarPage: React.FC = () => {
                       handleDelete(event.id);
                     }}
                     className="ml-2"
+                    title="Delete event"
                   >
                     ❌
                   </button>
@@ -215,22 +214,6 @@ const CalendarPage: React.FC = () => {
             <h3 className="font-semibold mb-2">
               Add Event {selectedDay && `(Day ${selectedDay})`}
             </h3>
-
-            {/* ✅ Day Selector FIX */}
-            <select
-              value={selectedDay ?? ""}
-              onChange={(e) => setSelectedDay(Number(e.target.value))}
-              className="w-full p-2 mt-2 border rounded"
-            >
-              <option value="">Select Day</option>
-              {Array.from({ length: daysInMonth }, (_, i) => i + 1).map(
-                (d) => (
-                  <option key={d} value={d}>
-                    {d}
-                  </option>
-                )
-              )}
-            </select>
 
             <input
               placeholder="Title"
