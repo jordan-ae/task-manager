@@ -3,6 +3,7 @@ import { dummyTasks } from '../../tasks/routes/tasks-page';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 import { Toaster } from '../../../components/ui/sonner';
+import { Button } from '@/components/ui/button';
 
 export function Home() {
     const completedCount = dummyTasks.filter(task => task.status === "Completed").length;
