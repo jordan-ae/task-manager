@@ -47,8 +47,9 @@ const CalendarPage: React.FC = () => {
     );
   };
 
-  const openModal = (day: number) => {
-    setSelectedDay(day);
+  // 🔥 Open modal from button
+  const openAddModal = () => {
+    setSelectedDay(new Date().getDate());
     setShowModal(true);
   };
 
@@ -78,6 +79,7 @@ const CalendarPage: React.FC = () => {
     setTime("");
     setDescription("");
     setColor("#ea580c");
+    setSelectedDay(null);
     setShowModal(false);
   };
 
@@ -107,13 +109,19 @@ const CalendarPage: React.FC = () => {
         <button onClick={() => changeMonth(1)}>Next</button>
       </div>
 
+      {/* Add Event Button */}
+      <button onClick={openAddModal} style={addBtn}>
+        Add Event
+      </button>
+
       {/* Calendar Grid */}
       <div style={grid}>
         {Array.from({ length: getDaysInMonth() }, (_, i) => i + 1).map(
           (day) => {
             const dayEvents = events.filter(
-              (e) => new Date(e.date).getDate() === day &&
-                     new Date(e.date).getMonth() === currentDate.getMonth()
+              (e) =>
+                new Date(e.date).getDate() === day &&
+                new Date(e.date).getMonth() === currentDate.getMonth()
             );
 
             return (
@@ -123,7 +131,6 @@ const CalendarPage: React.FC = () => {
                   ...dayBox,
                   background: isToday(day) ? "#fde68a" : "#fff",
                 }}
-                onClick={() => openModal(day)}
               >
                 <strong>{day}</strong>
 
@@ -157,7 +164,24 @@ const CalendarPage: React.FC = () => {
       {showModal && (
         <div style={modalOverlay}>
           <div style={modal}>
-            <h3>Add Event (Day {selectedDay})</h3>
+            <h3>Add Event</h3>
+
+            {/* Day Selector */}
+            <select
+              value={selectedDay || ""}
+              onChange={(e) => setSelectedDay(Number(e.target.value))}
+              style={input}
+            >
+              <option value="">Select Day</option>
+              {Array.from(
+                { length: getDaysInMonth() },
+                (_, i) => i + 1
+              ).map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
+              ))}
+            </select>
 
             <input
               placeholder="Title"
@@ -235,7 +259,6 @@ const dayBox: React.CSSProperties = {
   borderRadius: "10px",
   minHeight: "100px",
   border: "1px solid #f1e5d9",
-  cursor: "pointer",
 };
 
 const eventItem: React.CSSProperties = {
@@ -288,6 +311,6 @@ const addBtn: React.CSSProperties = {
   border: "none",
   padding: "8px 12px",
   borderRadius: "6px",
-  marginRight: "10px",
+  marginTop: "10px",
   cursor: "pointer",
 };
