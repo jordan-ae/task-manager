@@ -36,6 +36,8 @@ const CalendarPage: React.FC = () => {
     return new Date(year, month + 1, 0).getDate();
   };
 
+  const daysInMonth = getDaysInMonth();
+
   const isToday = (day: number) => {
     const today = new Date();
     return (
@@ -45,8 +47,13 @@ const CalendarPage: React.FC = () => {
     );
   };
 
+  // ✅ FIXED openModal
   const openModal = (day?: number) => {
-    if (day) setSelectedDay(day);
+    if (day !== undefined) {
+      setSelectedDay(day); // from calendar click
+    } else {
+      setSelectedDay(null); // from button → user must choose
+    }
     setShowModal(true);
   };
 
@@ -77,6 +84,7 @@ const CalendarPage: React.FC = () => {
     setTime("");
     setDescription("");
     setColor("#ea580c");
+    setSelectedDay(null);
     setShowModal(false);
   };
 
