@@ -1,18 +1,19 @@
 import { useContext } from "react";
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../features/auth/auth-context";
 
 type SidebarItem = {
     icon: string;
     name: string;
     active?: boolean;
+    path: string;
 };
 
 const navItems: SidebarItem[] = [
-    { icon: "OV", name: "Overview", active: true },
-    { icon: "TK", name: "Tasks" },
-    { icon: "CL", name: "Calendar" },
-    { icon: "TM", name: "Teams" },
+    { icon: "OV", name: "Overview", path : "/overview", active: true },
+    { icon: "TK", name: "Tasks", path : "/tasks" },
+    { icon: "CL", name: "Calendar", path : "/calendar" },
+    { icon: "TM", name: "Teams", path : "/teams" },
 ];
 
 export function Sidebar() {
@@ -69,7 +70,7 @@ export function Sidebar() {
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-orange-700">Navigation</p>
                 <nav className="grid gap-2" aria-label="Sidebar">
                     {navItems.map((item) => (
-                        <button
+                        <NavLink to={item.path}
                             key={item.name}
                             className={[
                                 "grid w-full grid-cols-[auto_1fr] items-center gap-3 rounded-2xl border px-4 py-3.5 text-left transition duration-150",
@@ -83,7 +84,7 @@ export function Sidebar() {
                                 {item.icon}
                             </span>
                             <span className="font-sans text-[0.96rem] font-bold leading-5 text-stone-950">{item.name}</span>
-                        </button>
+                        </NavLink>
                     ))}
                 </nav>
             </section>
