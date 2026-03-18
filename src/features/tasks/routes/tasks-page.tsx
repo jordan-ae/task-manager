@@ -16,50 +16,17 @@ const dummyTasks: Task[] = [
   { id: 5, title: "Cook Yams", status: "Pending" },
 ];
 
-
-
-
 export default function TasksPage() {
-const [taskTitle, setTaskTitle] = useState("");
-const [extraTasks, setExtraTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState("All");
-
-  const addTask = () => {
-  if (!taskTitle.trim()) return;
-
-  setExtraTasks([
-    ...extraTasks,
-    { id: Date.now(), title: taskTitle, status: "Pending" },
-  ]);
-
-    setTaskTitle("");}
-
-    const allTasks = [...dummyTasks, ...extraTasks];
 
   const filteredTasks =
     filter === "All"
-      ? allTasks
-      : allTasks.filter((task) => task.status === filter);
+      ? dummyTasks
+      : dummyTasks.filter((task) => task.status === filter);
 
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Tasks</h1>
-
-      <div className="flex gap-2 mb-4">
-  <input
-    value={taskTitle}
-    onChange={(e) => setTaskTitle(e.target.value)}
-    placeholder="New task..."
-    className="border px-3 py-1 rounded w-full"
-  />
-
-  <button
-    onClick={addTask}
-    className="bg-green-500 text-white px-4 py-1 rounded"
-  >
-    Add
-  </button>
-</div>
 
     
       <div className="flex gap-2 mb-6">
