@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import DeleteButton from "../components/DeleteButton";
 
 type Event = {
   id: number;
@@ -89,7 +90,7 @@ const CalendarPage: React.FC = () => {
   };
 
   const handleDelete = (id: number) => {
-    setEvents(events.filter((e) => e.id !== id));
+    setEvents((prevEvents) => prevEvents.filter((e) => e.id !== id));
   };
 
   const changeMonth = (offset: number) => {
@@ -190,16 +191,9 @@ const CalendarPage: React.FC = () => {
                 >
                   {event.title}
 
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(event.id);
-                    }}
-                    className="ml-2"
-                    title="Delete event"
-                  >
-                    ❌
-                  </button>
+                  <DeleteButton
+                    onClick={() => handleDelete(event.id)}
+                  />
                 </div>
               ))}
             </div>
