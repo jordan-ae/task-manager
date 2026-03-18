@@ -1,18 +1,19 @@
 import { useContext } from "react";
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../features/auth/auth-context";
 
 type SidebarItem = {
     icon: string;
     name: string;
     active?: boolean;
+    path: string;
 };
 
 const navItems: SidebarItem[] = [
-    { icon: "OV", name: "Overview", active: true },
-    { icon: "TK", name: "Tasks" },
-    { icon: "CL", name: "Calendar" },
-    { icon: "TM", name: "Teams" },
+    { icon: "OV", name: "Overview", path: "/" },
+    { icon: "TK", name: "Tasks", path: "/tasks" },
+    { icon: "CL", name: "Calendar", path: "/calendar" },
+    { icon: "TM", name: "Teams", path: "/teams" },
 ];
 
 export function Sidebar() {
@@ -69,21 +70,24 @@ export function Sidebar() {
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-orange-700">Navigation</p>
                 <nav className="grid gap-2" aria-label="Sidebar">
                     {navItems.map((item) => (
-                        <button
+                        <NavLink
                             key={item.name}
-                            className={[
-                                "grid w-full grid-cols-[auto_1fr] items-center gap-3 rounded-2xl border px-4 py-3.5 text-left transition duration-150",
-                                item.active
-                                    ? "border-orange-700/20 bg-orange-100/70"
-                                    : "border-transparent bg-white/60 hover:border-orange-700/10 hover:bg-white/90",
-                            ].join(" ")}
+                            to={item.path}
+                            className={({ isActive }) =>
+                                [
+                                    "grid w-full grid-cols-[auto_1fr] items-center gap-3 rounded-2xl border px-4 py-3.5 text-left transition duration-150",
+                                    isActive
+                                        ? "border-orange-700/20 bg-orange-100/70"
+                                        : "border-transparent bg-white/60 hover:border-orange-700/10 hover:bg-white/90",
+                                ].join(" ")
+                            }
                             type="button"
                         >
                             <span className="grid h-8 w-8 place-items-center rounded-xl bg-gradient-to-br from-orange-600 to-orange-800 text-[0.76rem] font-bold tracking-[0.08em] text-orange-50">
                                 {item.icon}
                             </span>
                             <span className="font-sans text-[0.96rem] font-bold leading-5 text-stone-950">{item.name}</span>
-                        </button>
+                        </NavLink>
                     ))}
                 </nav>
             </section>
