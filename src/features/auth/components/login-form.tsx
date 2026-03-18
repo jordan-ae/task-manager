@@ -1,80 +1,138 @@
-import { useContext, useState } from "react"
-import { AuthContext } from "../auth-context"
-import { Link, useNavigate } from "react-router"
-import type { FormEvent } from "react"
+import { useContext, useState } from "react";
+import { AuthContext } from "../auth-context";
+import { Link, useNavigate } from "react-router";
+import type { FormEvent } from "react";
+import { FaLock } from "react-icons/fa";
+import { FaEnvelope } from "react-icons/fa";
 
 export function LoginForm() {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [error, setError] = useState('')
-    const auth = useContext(AuthContext)
-    const navigate = useNavigate()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showForgot, setShowForgot] = useState(false);
+  const [error, setError] = useState("");
+  const auth = useContext(AuthContext);
+  const navigate = useNavigate();
 
-    if (!auth) {
-        throw new Error("LoginForm must be used within AuthProvide")
+  if (!auth) {
+    throw new Error("LoginForm must be used within AuthProvide");
+  }
+
+  const { login } = auth;
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError("");
+
+    try {
+      login(email, password);
+      navigate("/");
+    } catch (loginError) {
+      if (loginError instanceof Error) {
+        setError(loginError.message);
+        return;
+      }
+
+      setError("Unable to log in.");
     }
+  }
 
-    const { login } = auth
+  return (
+    <form className="mt-7 grid gap-4" onSubmit={handleSubmit}>
+      {showForgot && (
+        <div className="grid gap-3">
+          <h2 className="text-xl text-white">Reset Password</h2>
 
-    function handleSubmit(e: FormEvent<HTMLFormElement>){
-        e.preventDefault()
-        setError("")
+          <input
+            type="email"
+            placeholder="Enter your email"
+            className="p-3 rounded bg-gray-800 text-white"
+          />
 
-        try {
-            login(email, password)
-            navigate('/')
-        } catch (loginError) {
-            if (loginError instanceof Error) {
-                setError(loginError.message)
-                return
-            }
+          <button
+            type="button"
+            className="bg-orange-500 p-3 rounded text-white"
+          >
+            Reset Password
+          </button>
 
-            setError("Unable to log in.")
-        }
-    }
+          <button
+            type="button"
+            onClick={() => setShowForgot(false)}
+            className="text-sm text-gray-400"
+          >
+            Back
+          </button>
+        </div>
+      )}
+      <div className="grid gap-2">
+        <label className="text-xs font-bold uppercase tracking-[0.08em] text-stone-600">
+          <FaEnvelope className="text-gray-400 mr-2" />
+          Email
+        </label>
+        <input
+          className="w-full p-3 rounded bg-gray-800 text-white placeholder-gray-400"
+          type="email"
+          value={email}
+          placeholder="Enter your email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
 
-    return (
-        <form className="mt-7 grid gap-4" onSubmit={handleSubmit}>
-            <div className="grid gap-2">
-                <label className="text-xs font-bold uppercase tracking-[0.08em] text-stone-950">Email</label>
-                <input
-                    className="w-full rounded-2xl border border-stone-700/15 bg-stone-50 px-4 py-4 text-stone-950 outline-none transition duration-150 placeholder:text-stone-400 focus:-translate-y-px focus:border-orange-500/70 focus:ring-4 focus:ring-orange-500/15"
-                    type="email"
-                    value={email}
-                    placeholder="Enter your email"
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-            </div>
+      <div className="grid gap-2">
+        <label className="text-xs font-bold uppercase tracking-[0.08em] text-stone-600">
+          <FaLock className="text-gray-400 mr-2" />
+          Password
+        </label>
+        <input
+          className="w-full p-3 rounded bg-gray-800 text-white placeholder-gray-400"
+          type="password"
+          value={password}
+          placeholder="Enter your password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <div className="flex-justify-end">
+          <button
+            type="button"
+            onClick={() => setShowForgot(true)}
+            className="text-orange-700 hover:text-orange-800 text-sm mt-1"
+          >
+            Forgotpassword?
+          </button>
+        </div>
+      </div>
 
-            <div className="grid gap-2">
-                <label className="text-xs font-bold uppercase tracking-[0.08em] text-stone-950">Password</label>
-                <input
-                    className="w-full rounded-2xl border border-stone-700/15 bg-stone-50 px-4 py-4 text-stone-950 outline-none transition duration-150 placeholder:text-stone-400 focus:-translate-y-px focus:border-orange-500/70 focus:ring-4 focus:ring-orange-500/15"
-                    type="password"
-                    value={password}
-                    placeholder="Enter your password"
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-            </div>
+      {error ? (
+        <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
+        </p>
+      ) : null}
 
-            {error ? (
-                <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                    {error}
-                </p>
-            ) : null}
+      <button
+        className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded"
+        type="submit"
+      >
+        Login
+      </button>
 
-            <button
-                className="mt-2 inline-flex items-center justify-center rounded-full bg-gradient-to-br from-orange-600 to-orange-800 px-5 py-4 text-sm font-bold tracking-[0.04em] text-orange-50 shadow-[0_16px_32px_rgba(165,67,27,0.28)] transition duration-150 hover:-translate-y-0.5 hover:saturate-110 focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-orange-500/20"
-                type="submit"
-            >
-                Login
-            </button>
-            <p className="text-sm text-stone-600">
-                Don&apos;t have an account?{" "}
-                <Link className="font-semibold text-orange-700 transition hover:text-orange-800" to="/sign-up">
-                    Sign up
-                </Link>
-            </p>
-        </form>
-    )
+      <div className="text-gray-400 text-center mt-6">Or continue with</div>
+
+      <div className="flex gap-4 mt-3">
+        <button className="flex-1 bg-gray-800 text-white py-2 rounded">
+          Google
+        </button>
+        <button className="flex-1 bg-gray-800 text-white py-2 rounded">
+          GitHub
+        </button>
+      </div>
+      <p className="text-sm text-stone-600">
+        Don&apos;t have an account?{" "}
+        <Link
+          className="font-semibold text-orange-700 transition hover:text-orange-800"
+          to="/sign-up"
+        >
+          Sign up
+        </Link>
+      </p>
+    </form>
+  );
 }
