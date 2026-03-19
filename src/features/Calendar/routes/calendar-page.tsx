@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import DeleteButton from "../components/DeleteButton";
 
 type Event = {
   id: number;
@@ -45,7 +46,7 @@ const CalendarPage: React.FC = () => {
     );
   };
 
-  //  FIXED openModal
+  // ✅ FIXED openModal
   const openModal = (day?: number) => {
     if (day !== undefined) {
       setSelectedDay(day); // from calendar click
@@ -87,7 +88,7 @@ const CalendarPage: React.FC = () => {
   };
 
   const handleDelete = (id: number) => {
-    setEvents(events.filter((e) => e.id !== id));
+    setEvents((prevEvents) => prevEvents.filter((e) => e.id !== id));
   };
 
   const changeMonth = (offset: number) => {
@@ -188,16 +189,9 @@ const CalendarPage: React.FC = () => {
                 >
                   {event.title}
 
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(event.id);
-                    }}
-                    className="ml-2"
-                    title="Delete event"
-                  >
-                    ❌
-                  </button>
+                  <DeleteButton
+                    onClick={() => handleDelete(event.id)}
+                  />
                 </div>
               ))}
             </div>
@@ -212,6 +206,22 @@ const CalendarPage: React.FC = () => {
             <h3 className="font-semibold mb-2">
               Add Event {selectedDay && `(Day ${selectedDay})`}
             </h3>
+
+            {/*  Day Selector FIX */}
+            <select
+              value={selectedDay ?? ""}
+              onChange={(e) => setSelectedDay(Number(e.target.value))}
+              className="w-full p-2 mt-2 border rounded"
+            >
+              <option value="">Select Day</option>
+              {Array.from({ length: daysInMonth }, (_, i) => i + 1).map(
+                (d) => (
+                  <option key={d} value={d}>
+                    {d}
+                  </option>
+                )
+              )}
+            </select>
 
             <input
               placeholder="Title"
