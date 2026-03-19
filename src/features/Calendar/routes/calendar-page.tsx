@@ -36,8 +36,6 @@ const CalendarPage: React.FC = () => {
     return new Date(year, month + 1, 0).getDate();
   };
 
-  const daysInMonth = getDaysInMonth();
-
   const isToday = (day: number) => {
     const today = new Date();
     return (
@@ -47,7 +45,7 @@ const CalendarPage: React.FC = () => {
     );
   };
 
-  // ✅ FIXED openModal
+  //  FIXED openModal
   const openModal = (day?: number) => {
     if (day !== undefined) {
       setSelectedDay(day); // from calendar click
