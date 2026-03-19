@@ -1,3 +1,5 @@
+import { events } from "../data/events";
+
 interface EventCardProps {
   title: string;
   date: string;
@@ -13,3 +15,4 @@ export default function EventCard({ title, date, description }: EventCardProps) 
     </div>
   );
 }
+

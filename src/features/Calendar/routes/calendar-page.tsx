@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import DeleteButton from "../components/DeleteButton";
+import CalendarHeader from "../components/CalendarHeader";
+import CalendarGrid from "../components/CalendarGrid";
+import EventModal from "../components/EventModal";
 
-type Event = {
+export type Event = {
   id: number;
   title: string;
   date: string;
@@ -30,31 +32,6 @@ const CalendarPage: React.FC = () => {
   useEffect(() => {
     localStorage.setItem("events", JSON.stringify(events));
   }, [events]);
-
-  const getDaysInMonth = () => {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-    return new Date(year, month + 1, 0).getDate();
-  };
-
-  const isToday = (day: number) => {
-    const today = new Date();
-    return (
-      day === today.getDate() &&
-      currentDate.getMonth() === today.getMonth() &&
-      currentDate.getFullYear() === today.getFullYear()
-    );
-  };
-
-  // ✅ FIXED openModal
-  const openModal = (day?: number) => {
-    if (day !== undefined) {
-      setSelectedDay(day); // from calendar click
-    } else {
-      setSelectedDay(null); // from button → user must choose
-    }
-    setShowModal(true);
-  };
 
   const handleAdd = () => {
     if (!title || selectedDay === null) return;
@@ -88,7 +65,12 @@ const CalendarPage: React.FC = () => {
   };
 
   const handleDelete = (id: number) => {
-    setEvents((prevEvents) => prevEvents.filter((e) => e.id !== id));
+    setEvents((prev) => prev.filter((e) => e.id !== id));
+  };
+
+  const openModal = (day?: number) => {
+    setSelectedDay(day ?? null);
+    setShowModal(true);
   };
 
   const changeMonth = (offset: number) => {
@@ -97,177 +79,43 @@ const CalendarPage: React.FC = () => {
     setCurrentDate(newDate);
   };
 
-  // For calendar grid alignment
-  const firstDayOfMonth = new Date(
+  const daysInMonth = new Date(
     currentDate.getFullYear(),
-    currentDate.getMonth(),
-    1
-  ).getDay();
-  const daysInMonth = getDaysInMonth();
+    currentDate.getMonth() + 1,
+    0
+  ).getDate();
 
   return (
     <div className="p-5 bg-orange-50 min-h-screen">
-      {/* Header + Add Button */}
-      <div className="flex justify-between items-center mb-5">
-        <h2 className="text-orange-700 text-xl font-semibold">
-          📅 Calendar
-        </h2>
+      <CalendarHeader
+        currentDate={currentDate}
+        changeMonth={changeMonth}
+        openModal={() => openModal()}
+      />
 
-        <button
-          onClick={() => openModal()}
-          className="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700"
-        >
-          + Add Event
-        </button>
-      </div>
+      <CalendarGrid
+        currentDate={currentDate}
+        events={events}
+        openModal={openModal}
+        handleDelete={handleDelete}
+      />
 
-      {/* Month Navigation */}
-      <div className="flex justify-between items-center mb-2">
-        <button
-          onClick={() => changeMonth(-1)}
-          className="px-3 py-1 bg-gray-200 rounded"
-        >
-          Prev
-        </button>
-
-        <h3 className="font-semibold">
-          {currentDate.toLocaleString("default", {
-            month: "long",
-            year: "numeric",
-          })}
-        </h3>
-
-        <button
-          onClick={() => changeMonth(1)}
-          className="px-3 py-1 bg-gray-200 rounded"
-        >
-          Next
-        </button>
-      </div>
-
-      {/* Weekday Headers */}
-      <div className="grid grid-cols-7 text-center font-semibold mb-2">
-        {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
-          <div key={d}>{d}</div>
-        ))}
-      </div>
-
-      {/* Calendar Grid */}
-      <div className="grid grid-cols-7 gap-3">
-        {/* Empty slots for first day */}
-        {Array.from({ length: firstDayOfMonth }).map((_, i) => (
-          <div
-            key={`blank-${i}`}
-            className="p-2 border rounded min-h-[100px] bg-gray-50"
-          ></div>
-        ))}
-
-        {/* Days */}
-        {Array.from({ length: daysInMonth }, (_, i) => {
-          const day = i + 1;
-          const dayEvents = events.filter(
-            (e) =>
-              new Date(e.date).getDate() === day &&
-              new Date(e.date).getMonth() === currentDate.getMonth()
-          );
-
-          return (
-            <div
-              key={day}
-              onClick={() => openModal(day)}
-              className={`p-2 rounded-lg min-h-[100px] border cursor-pointer ${
-                isToday(day) ? "bg-yellow-200" : "bg-white"
-              }`}
-            >
-              <strong>{day}</strong>
-
-              {dayEvents.map((event) => (
-                <div
-                  key={event.id}
-                  className="mt-1 text-white text-xs px-2 py-1 rounded flex justify-between items-center"
-                  style={{ background: event.color || "#ea580c" }}
-                >
-                  {event.title}
-
-                  <DeleteButton
-                    onClick={() => handleDelete(event.id)}
-                  />
-                </div>
-              ))}
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-          <div className="bg-white p-5 rounded-lg w-[300px]">
-            <h3 className="font-semibold mb-2">
-              Add Event {selectedDay && `(Day ${selectedDay})`}
-            </h3>
-
-            {/*  Day Selector FIX */}
-            <select
-              value={selectedDay ?? ""}
-              onChange={(e) => setSelectedDay(Number(e.target.value))}
-              className="w-full p-2 mt-2 border rounded"
-            >
-              <option value="">Select Day</option>
-              {Array.from({ length: daysInMonth }, (_, i) => i + 1).map(
-                (d) => (
-                  <option key={d} value={d}>
-                    {d}
-                  </option>
-                )
-              )}
-            </select>
-
-            <input
-              placeholder="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="w-full p-2 mt-2 border rounded"
-            />
-
-            <input
-              type="time"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-              className="w-full p-2 mt-2 border rounded"
-            />
-
-            <input
-              placeholder="Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="w-full p-2 mt-2 border rounded"
-            />
-
-            <input
-              type="color"
-              value={color}
-              onChange={(e) => setColor(e.target.value)}
-              className="mt-2"
-            />
-
-            <div className="mt-4 flex justify-end">
-              <button
-                onClick={handleAdd}
-                className="bg-orange-600 text-white px-3 py-2 rounded mr-2"
-              >
-                Save
-              </button>
-
-              <button
-                onClick={() => setShowModal(false)}
-                className="px-3 py-2 border rounded"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
+        <EventModal
+          selectedDay={selectedDay}
+          setSelectedDay={setSelectedDay}
+          daysInMonth={daysInMonth}
+          title={title}
+          setTitle={setTitle}
+          time={time}
+          setTime={setTime}
+          description={description}
+          setDescription={setDescription}
+          color={color}
+          setColor={setColor}
+          handleAdd={handleAdd}
+          closeModal={() => setShowModal(false)}
+        />
       )}
     </div>
   );

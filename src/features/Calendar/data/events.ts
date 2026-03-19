@@ -33,3 +33,5 @@ export const events: Event[] = [
     type: "presentation",
   },
 ];
+
+export default events;

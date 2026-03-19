@@ -27,7 +27,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ onClick }) => {
         e.currentTarget.style.background = "#ffe5e0";
       }}
     >
-      Delete
+      Del
     </button>
   );
 };
