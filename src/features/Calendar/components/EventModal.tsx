@@ -1,20 +1,17 @@
+import type { Dispatch, SetStateAction } from "react";
+
 type Props = {
   selectedDay: number | null;
-  setSelectedDay: (day: number) => void;
+  setSelectedDay: Dispatch<SetStateAction<number | null>>;
   daysInMonth: number;
-
   title: string;
-  setTitle: (val: string) => void;
-
+  setTitle: Dispatch<SetStateAction<string>>;
   time: string;
-  setTime: (val: string) => void;
-
+  setTime: Dispatch<SetStateAction<string>>;
   description: string;
-  setDescription: (val: string) => void;
-
+  setDescription: Dispatch<SetStateAction<string>>;
   color: string;
-  setColor: (val: string) => void;
-
+  setColor: Dispatch<SetStateAction<string>>;
   handleAdd: () => void;
   closeModal: () => void;
 };
@@ -47,13 +44,11 @@ const EventModal: React.FC<Props> = ({
           className="w-full p-2 mt-2 border rounded"
         >
           <option value="">Select Day</option>
-          {Array.from({ length: daysInMonth }, (_, i) => i + 1).map(
-            (d) => (
-              <option key={d} value={d}>
-                {d}
-              </option>
-            )
-          )}
+          {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((d) => (
+            <option key={d} value={d}>
+              {d}
+            </option>
+          ))}
         </select>
 
         <input
@@ -91,11 +86,7 @@ const EventModal: React.FC<Props> = ({
           >
             Save
           </button>
-
-          <button
-            onClick={closeModal}
-            className="px-3 py-2 border rounded"
-          >
+          <button onClick={closeModal} className="px-3 py-2 border rounded">
             Cancel
           </button>
         </div>

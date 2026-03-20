@@ -1,9 +1,18 @@
 import DayCell from "./DayCell";
-import { useCalendar } from "../context/CalendarContext";
 
-const CalendarGrid: React.FC = () => {
-  const { currentDate, events, deleteEvent } = useCalendar();
+type Props = {
+  currentDate: Date;
+  events: Event[];
+  openModal: (day: number) => void;
+  handleDelete: (id: number) => void;
+};
 
+const CalendarGrid: React.FC<Props> = ({
+  currentDate,
+  events,
+  openModal,
+  handleDelete,
+}) => {
   const daysInMonth = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth() + 1,
@@ -38,6 +47,10 @@ const CalendarGrid: React.FC = () => {
           <DayCell
             key={day}
             day={day}
+            currentDate={currentDate}
+            events={events}
+            openModal={openModal}
+            handleDelete={handleDelete}
             isToday={isToday(day)}
           />
         );
