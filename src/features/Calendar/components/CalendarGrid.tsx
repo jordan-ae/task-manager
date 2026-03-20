@@ -1,17 +1,16 @@
-import type { Event } from "../routes/calendar-page";
 import DayCell from "./DayCell";
 
 type Props = {
   currentDate: Date;
-  events: Event[];
   openModal: (day: number) => void;
+  events: any[];
   handleDelete: (id: number) => void;
 };
 
 const CalendarGrid: React.FC<Props> = ({
   currentDate,
-  events,
   openModal,
+  events,
   handleDelete,
 }) => {
   const daysInMonth = new Date(
@@ -49,10 +48,10 @@ const CalendarGrid: React.FC<Props> = ({
             key={day}
             day={day}
             currentDate={currentDate}
-            events={events}
             openModal={openModal}
-            handleDelete={handleDelete}
             isToday={isToday(day)}
+            events={events}
+            handleDelete={handleDelete}
           />
         );
       })}

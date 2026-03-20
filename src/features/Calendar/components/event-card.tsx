@@ -1,5 +1,3 @@
-import { events } from "../data/events";
-
 interface EventCardProps {
   title: string;
   date: string;
