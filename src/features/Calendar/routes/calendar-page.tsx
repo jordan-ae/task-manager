@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import CalendarHeader from "../components/CalendarHeader";
 import CalendarGrid from "../components/CalendarGrid";
 import EventModal from "../components/EventModal";
+import { CalendarProvider } from "../context/CalendarContext";
 
 export type Event = {
   id: number;
@@ -86,6 +87,7 @@ const CalendarPage: React.FC = () => {
   ).getDate();
 
   return (
+    <CalendarProvider>
     <div className="p-5 bg-orange-50 min-h-screen">
       <CalendarHeader
         currentDate={currentDate}
@@ -118,6 +120,8 @@ const CalendarPage: React.FC = () => {
         />
       )}
     </div>
+    </CalendarProvider>
+
   );
 };
 
